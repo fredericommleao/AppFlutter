@@ -7,9 +7,10 @@ import 'dart:convert';
 import 'encapsula_json_obj.dart';
 
 class loginAPI {
-  static Future<Jsessionid> login(String user, String password) async {
+  static Future<Jsessionid> login(
+      String user, String password, String ipEndereco, String porta) async {
     var requisicao = Uri.parse(
-        'http://192.168.100.2:8380/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
+        'http://$ipEndereco:$porta/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
 
     var body = json.encode({
       "serviceName": "MobileLoginSP.login",
