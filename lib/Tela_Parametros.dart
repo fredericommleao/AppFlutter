@@ -1,9 +1,9 @@
-// ignore_for_file: camel_case_types, file_names, unused_label, prefer_const_constructors, unused_element, use_key_in_widget_constructors, non_constant_identifier_names, avoid_print
-import 'dart:convert';
+// ignore_for_file: camel_case_types, file_names, unused_label, prefer_const_constructors, unused_element, use_key_in_widget_constructors, non_constant_identifier_names, avoid_print, deprecated_member_use
+import 'package:aplicativo/Model/user.dart';
 import 'package:aplicativo/Tela_Login.dart';
+import 'package:aplicativo/user_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Model/dados_parametros.dart';
 
 class entrou extends StatefulWidget {
   @override
@@ -11,117 +11,102 @@ class entrou extends StatefulWidget {
 }
 
 class _ParametroState extends State<entrou> {
+  List<User> userList = [];
   //captura texto textfield
-  final TextEditingController ipController = TextEditingController();
+  TextEditingController ipController = TextEditingController();
   //captura texto textfield
-  final TextEditingController portaController = TextEditingController();
+  TextEditingController portaController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    void addUserData(User user) {
+      setState(() {
+        userList.add(user);
+      });
+    }
+
+    void showUserDialog() {
+      showDialog(
+        context: (context),
+        builder: (_) {
+          return AlertDialog(
+            content: AddUserDialog(addUserData),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showUserDialog();
+        },
+        child: Icon(Icons.add),
+      ),
       appBar: AppBar(
-          backgroundColor: Colors.orange,
+          backgroundColor: Color.fromARGB(255, 223, 135, 4),
           title: const Text('Servidores',
               style: TextStyle(color: Colors.white, fontSize: 24))),
+      body: Container(
+        height: MediaQuery.of(context).size.height * 0.75,
+        child: ListView.builder(
+          itemBuilder: (ctx, index) {
+            return Card(
+              margin: EdgeInsets.all(4),
+              elevation: 8,
+              child: ListTile(
+                title: Text(
+                  userList[index].username,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.black38,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                subtitle: Text(
+                  userList[index].email,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.black38,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                trailing: Text(
+                  userList[index].phoneNo,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.black38,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            );
+          },
+          itemCount: userList.length,
+        ),
+      ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.orange,
+        color: Color.fromARGB(255, 223, 135, 4),
         shape: const CircularNotchedRectangle(),
         child: Container(height: 50.0),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.orange,
-        onPressed: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text(
-              'Informe os parâmetros',
-              style: TextStyle(fontSize: 20, color: Colors.black87),
-            ),
-            actions: <Widget>[
-              TextField(
-                  controller: ipController,
-                  decoration: InputDecoration(
-                      labelText: "ENDEREÇO IP",
-                      labelStyle:
-                          TextStyle(fontSize: 15, color: Colors.grey.shade400),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)))),
-              SizedBox(
-                height: 10,
-              ),
-              TextField(
-                  controller: portaController,
-                  decoration: InputDecoration(
-                      labelText: "PORTA",
-                      labelStyle:
-                          TextStyle(fontSize: 15, color: Colors.grey.shade400),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)))),
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(fontSize: 17, color: Colors.black87),
-                ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(16.0),
-                  primary: Colors.orange,
-                  textStyle: const TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  //salva_ip();
-                  //salva_porta();
-                  _navegaHomepage(context);
-                },
-                child: const Text(
-                  'OK',
-                  style: TextStyle(fontSize: 17, color: Colors.black87),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-/*
-  
- void salva_na_memoria_ip(ipParam ip) async {
+  Future<void> save_ip() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("ip", json.encode(ip.toJson()));
+    prefs.setString('key_ip', ipController.text);
+    print(prefs.getString('key_ip'));
   }
 
-  void salva_porta() {
-    porta_param porta = porta_param(portaController.text);
-    salva_na_memoria_porta(porta);
-  }
-
-  void salva_na_memoria_porta(porta_param porta) async {
+  Future<void> save_porta() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("porta", json.encode(porta.toJson()));
-  }
-}
-*/
-
-  /*void _doSighUp() {
-    ipParam ip = ipParam(ipController.text);
-    _saveUser(ip);
-  }*/
-
-  void _doSignUp() {
-    ipParam ip = ipParam(ipController.text);
-
-    print(ip);
-    _saveUser(ip);
-  }
-
-  void _saveUser(ipParam ip) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("ip", json.encode(ip.toJson()));
+    print(prefs.getString('key_porta'));
+    prefs.setString('key_porta', portaController.text);
   }
 
   _navegaHomepage(BuildContext context) {

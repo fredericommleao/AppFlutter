@@ -9,7 +9,8 @@ class Senha {
 }
 
 class Ip {
-  static const ip_acesso = "ip";
+  String ip;
+  Ip(this.ip);
 }
 
 class Porta {
