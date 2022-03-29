@@ -71,7 +71,7 @@ class _LoginScreenState extends State<tela_login> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<tela_login> {
                   decoration: InputDecoration(
                       labelText: "USUÁRIO",
                       labelStyle:
-                          TextStyle(fontSize: 15, color: Colors.grey.shade700),
+                          TextStyle(fontSize: 15, color: Colors.grey.shade900),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10))),
                 ),
@@ -101,35 +101,33 @@ class _LoginScreenState extends State<tela_login> {
                   decoration: InputDecoration(
                       labelText: "SENHA",
                       labelStyle:
-                          TextStyle(fontSize: 15, color: Colors.grey.shade700),
+                          TextStyle(fontSize: 15, color: Colors.grey.shade900),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 25,
                 ),
                 GestureDetector(
                   onTap: () {},
                   child: Container(
                     alignment: Alignment.center,
-                    height: size.height / 14,
+                    height: size.height / 10,
                     width: size.width,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 223, 135, 4),
-                        borderRadius: BorderRadius.circular(5)),
-                    child: TextButton(
-                      onPressed: () async {
-                        fazerLogin();
-                      },
+                    child: ElevatedButton(
                       child: Text(
                         'Login',
-                        style: TextStyle(color: Colors.white, fontSize: 25),
+                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 120, vertical: 20),
+                          primary: Colors.orange,
+                          textStyle:
+                              TextStyle(fontSize: 25, color: Colors.black12)),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 15,
                 ),
               ],
             ),

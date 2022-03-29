@@ -11,7 +11,11 @@ class entrou extends StatefulWidget {
 }
 
 class _ParametroState extends State<entrou> {
-  List<User> userList = [];
+  late SharedPreferences IP_save;
+  late SharedPreferences Porta_save;
+
+  //List<Parametros>
+  List<Parametros> parametroList = [];
   //captura texto textfield
   TextEditingController ipController = TextEditingController();
   //captura texto textfield
@@ -19,18 +23,20 @@ class _ParametroState extends State<entrou> {
 
   @override
   Widget build(BuildContext context) {
-    void addUserData(User user) {
+    void addParam_Data(Parametros parametros) {
       setState(() {
-        userList.add(user);
+        parametroList.add(parametros);
       });
     }
 
-    void showUserDialog() {
+    void saveParam_Data() {}
+
+    void showParam_Dialog() {
       showDialog(
         context: (context),
         builder: (_) {
           return AlertDialog(
-            content: AddUserDialog(addUserData),
+            content: AddUserDialog(addParam_Data),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -41,51 +47,53 @@ class _ParametroState extends State<entrou> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
         onPressed: () {
-          showUserDialog();
+          showParam_Dialog();
         },
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Color.fromARGB(255, 223, 135, 4),
           title: const Text('Servidores',
-              style: TextStyle(color: Colors.white, fontSize: 24))),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400))),
       body: Container(
+        color: Color.fromARGB(43, 255, 255, 255),
         height: MediaQuery.of(context).size.height * 0.75,
         child: ListView.builder(
           itemBuilder: (ctx, index) {
             return Card(
               margin: EdgeInsets.all(4),
-              elevation: 8,
+              elevation: 10,
               child: ListTile(
                 title: Text(
-                  userList[index].username,
+                  parametroList[index].ip,
                   style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.black38,
+                    fontSize: 25,
+                    color: Colors.black,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
                 subtitle: Text(
-                  userList[index].email,
+                  parametroList[index].porta,
                   style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.black38,
-                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
-                trailing: Text(
-                  userList[index].phoneNo,
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.black38,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
+                onTap: () async {},
               ),
             );
           },
-          itemCount: userList.length,
+          itemCount: parametroList.length,
         ),
       ),
       bottomNavigationBar: BottomAppBar(

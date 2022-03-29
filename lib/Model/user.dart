@@ -1,7 +1,6 @@
-class User {
-  final String username;
-  final String email;
-  final String phoneNo;
+class Parametros {
+  final String ip;
+  final String porta;
 
-  User(this.username, this.email, this.phoneNo);
+  Parametros(this.ip, this.porta);
 }

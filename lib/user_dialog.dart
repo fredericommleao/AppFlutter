@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, unused_element, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, unused_element, avoid_unnecessary_containers, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+
 import 'package:aplicativo/Model/user.dart';
 import 'package:flutter/material.dart';
 
 class AddUserDialog extends StatefulWidget {
-  final Function(User) addUser;
+  final Function(Parametros) addUser;
 
   AddUserDialog(this.addUser);
 
@@ -31,35 +32,50 @@ class _AddUserDialogState extends State<AddUserDialog> {
       );
     }
 
-    var usernameController = TextEditingController();
-    var emailController = TextEditingController();
-    var phoneNoController = TextEditingController();
-
+    var ipController = TextEditingController();
+    var portaController = TextEditingController();
     return Container(
-      padding: EdgeInsets.all(8),
-      height: 350,
+      padding: EdgeInsets.all(20),
+      height: 400,
       width: 400,
       child: SingleChildScrollView(
         child: Column(
           children: [
             Text(
-              'Add User',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 32,
-                  color: Colors.blueGrey),
+              'Digite o novo endereço IP e '
+              'porta do servidor. ',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
             ),
-            buildTextField('Username', usernameController),
-            buildTextField('Email', emailController),
-            buildTextField('PhoneNo', phoneNoController),
+            Padding(
+              padding: EdgeInsets.all(
+                15.0,
+              ),
+            ),
+            buildTextField('IP', ipController),
+            Padding(
+              padding: EdgeInsets.all(
+                5.0,
+              ),
+            ),
+            buildTextField('PORTA', portaController),
+            Padding(
+              padding: EdgeInsets.all(
+                15.0,
+              ),
+            ),
             ElevatedButton(
+              child: Text('Salvar'),
               onPressed: () {
-                final user = User(usernameController.text, emailController.text,
-                    phoneNoController.text);
+                final user =
+                    Parametros(ipController.text, portaController.text);
                 widget.addUser(user);
                 Navigator.of(context).pop();
               },
-              child: Text('Add User'),
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  primary: Colors.orange,
+                  textStyle:
+                      TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
