@@ -1,9 +1,8 @@
 // ignore_for_file: camel_case_types, file_names, unused_label, prefer_const_constructors, unused_element, use_key_in_widget_constructors, non_constant_identifier_names, avoid_print, deprecated_member_use
-import 'package:aplicativo/Model/user.dart';
+import 'package:aplicativo/Model/Parametros.dart';
 import 'package:aplicativo/Tela_Login.dart';
 import 'package:aplicativo/user_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class entrou extends StatefulWidget {
   @override
@@ -11,15 +10,8 @@ class entrou extends StatefulWidget {
 }
 
 class _ParametroState extends State<entrou> {
-  late SharedPreferences IP_save;
-  late SharedPreferences Porta_save;
-
   //List<Parametros>
   List<Parametros> parametroList = [];
-  //captura texto textfield
-  TextEditingController ipController = TextEditingController();
-  //captura texto textfield
-  TextEditingController portaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +20,6 @@ class _ParametroState extends State<entrou> {
         parametroList.add(parametros);
       });
     }
-
-    void saveParam_Data() {}
 
     void showParam_Dialog() {
       showDialog(
@@ -48,7 +38,7 @@ class _ParametroState extends State<entrou> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
-        onPressed: () {
+        onPressed: () async {
           showParam_Dialog();
         },
         child: Icon(
@@ -89,7 +79,7 @@ class _ParametroState extends State<entrou> {
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                onTap: () async {},
+                onTap: () {},
               ),
             );
           },
@@ -103,18 +93,6 @@ class _ParametroState extends State<entrou> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
-  }
-
-  Future<void> save_ip() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('key_ip', ipController.text);
-    print(prefs.getString('key_ip'));
-  }
-
-  Future<void> save_porta() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString('key_porta'));
-    prefs.setString('key_porta', portaController.text);
   }
 
   _navegaHomepage(BuildContext context) {

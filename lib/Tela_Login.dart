@@ -1,13 +1,16 @@
 // ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names
+import 'dart:convert';
+
+import 'package:aplicativo/SharedPref.dart';
 import 'package:aplicativo/Tela_Parametros.dart';
 import 'package:flutter/material.dart';
 import 'package:aplicativo/requisicao_post_http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'Model/Parametros.dart';
 
 /*
   tela de login inicial
  */
-
 class tela_login extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -19,6 +22,16 @@ class _LoginScreenState extends State<tela_login> {
 
   //captura texto textfield
   final TextEditingController passwordController = TextEditingController();
+
+  void initialGetSaved() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> jsondatais =
+        jsonDecode(sharedPreferences.getString('key_parametros')!);
+
+    var param = Parametros.fromJson(jsondatais);
+    print(param.toJson());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,31 +47,32 @@ class _LoginScreenState extends State<tela_login> {
               child: PopupMenuButton(
                 itemBuilder: (context) => [
                   PopupMenuItem(
-                      child: Row(
-                    children: [
-                      ButtonBar(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  _navegaHomepage(context);
-                                },
-                                child: const Text(
-                                  'Alterar servidor',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
+                    child: Row(
+                      children: [
+                        ButtonBar(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    _navegaHomepage(context);
+                                  },
+                                  child: const Text(
+                                    'Alterar servidor',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ))
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ],
                 child: Icon(
                   Icons.read_more_outlined,
@@ -119,7 +133,9 @@ class _LoginScreenState extends State<tela_login> {
                         'Login',
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        initialGetSaved();
+                      },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
                               horizontal: 120, vertical: 20),
