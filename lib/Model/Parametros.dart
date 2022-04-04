@@ -1,15 +1,21 @@
 // ignore_for_file: file_names, unused_import, prefer_collection_literals
-import 'dart:convert';
-
 class Parametros {
-  final String ip;
-  final String porta;
+  late String ip;
+  late String porta;
+  late bool status;
 
-  Parametros(this.ip, this.porta);
+  Parametros({required this.ip, required this.porta, required this.status}) {
+    ip = ip;
+    porta = porta;
+    status = status;
+  }
 
-  Parametros.fromJson(Map<String, dynamic> json)
-      : ip = json['ip'],
-        porta = json['porta'];
+  toJson() {
+    return {"porta": porta, "ip": ip, "status": status};
+  }
 
-  Map<String, dynamic> toJson() => {'ip': ip, 'porta': porta};
+  fromJson(json) {
+    return Parametros(
+        ip: json['ip'], porta: json['porta'], status: json['status']);
+  }
 }

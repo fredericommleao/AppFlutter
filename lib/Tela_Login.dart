@@ -1,12 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names
-import 'dart:convert';
-
-import 'package:aplicativo/SharedPref.dart';
-import 'package:aplicativo/Tela_Parametros.dart';
+import 'package:aplicativo/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:aplicativo/requisicao_post_http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Model/Parametros.dart';
 
 /*
   tela de login inicial
@@ -22,16 +18,6 @@ class _LoginScreenState extends State<tela_login> {
 
   //captura texto textfield
   final TextEditingController passwordController = TextEditingController();
-
-  void initialGetSaved() async {
-    var sharedPreferences = await SharedPreferences.getInstance();
-
-    Map<String, dynamic> jsondatais =
-        jsonDecode(sharedPreferences.getString('key_parametros')!);
-
-    var param = Parametros.fromJson(jsondatais);
-    print(param.toJson());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +120,10 @@ class _LoginScreenState extends State<tela_login> {
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                       onPressed: () async {
-                        initialGetSaved();
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        var show = prefs.getString('parametros');
+                        print(show);
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
@@ -158,6 +147,7 @@ class _LoginScreenState extends State<tela_login> {
   }
 
   _navegaHomepage(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => entrou()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomePage()));
   }
 }

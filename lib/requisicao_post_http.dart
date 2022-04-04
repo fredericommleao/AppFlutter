@@ -1,9 +1,7 @@
 // ignore_for_file: camel_case_types, avoid_print, body_might_complete_normally_nullable
-import 'package:aplicativo/encapsula_json_obj.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'encapsula_json_obj.dart';
 
 class loginAPI {
   static Future<void> login(String user, String pass) async {
@@ -36,8 +34,6 @@ class loginAPI {
     var jsessionid = responseBody['jsessionid'];
 
     var token = jsessionid['\$'];
-
-    Jsessionid x = Jsessionid(token);
 
     print(responseFull);
   }
