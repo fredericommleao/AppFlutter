@@ -123,7 +123,7 @@ class _LoginScreenState extends State<tela_login> {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         var show = prefs.getString('parametros');
-                        print(show);
+                        print(show.toString());
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(

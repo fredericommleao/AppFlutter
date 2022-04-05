@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label
 import 'dart:convert';
 import 'package:aplicativo/todoView.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +72,9 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     decoration: BoxDecoration(),
                     child: InkWell(
-                      onTap: () async {},
+                      onTap: () async {
+                        update(todos.first);
+                      },
                       child: makeListTile(todos[index], index),
                     ),
                   ));
@@ -128,12 +130,6 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               width: 10,
             ),
-            todo.status
-                ? Icon(
-                    Icons.verified,
-                    color: Colors.black,
-                  )
-                : Container()
           ],
         ),
         subtitle: Wrap(
@@ -153,6 +149,31 @@ class _HomePageState extends State<HomePage> {
             },
             child: Icon(Icons.delete,
                 color: Color.fromARGB(255, 223, 135, 4), size: 30.0)));
+  }
+
+  Future update(Parametros todo) {
+    return showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              actions: [
+                // ignore: deprecated_member_use
+                FlatButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TodoView(
+                            parametros: todo,
+                          ),
+                        ));
+                    setState(() {
+                      saveTodo();
+                    });
+                  },
+                  child: Text('ATUALIZAR'),
+                ),
+              ],
+            ));
   }
 
   delete(Parametros todo) {

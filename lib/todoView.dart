@@ -26,18 +26,28 @@ class _TodoViewState extends State<TodoView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Color.fromARGB(240, 255, 255, 255),
       appBar: AppBar(
         centerTitle: true,
-        elevation: 10,
+        elevation: 25,
         backgroundColor: Color.fromARGB(255, 223, 135, 4),
-        title: Text("Novo servidor"),
+        title: Text(
+          "Novo servidor",
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(20),
+      body: AlertDialog(
+        title: Container(
+          padding: EdgeInsets.all(25),
           child: Column(
             children: [
+              Text(
+                'DIGITE O IP E PORTA DO NOVO SERVIDOR',
+                style: TextStyle(fontSize: 18.5),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Container(
                   child: colorOverride(TextField(
                 onChanged: (data) {
@@ -88,34 +98,9 @@ class _TodoViewState extends State<TodoView> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               InkWell(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                              title: Text("Alert"),
-                              content: Text(
-                                  "Mark this todo as ${parametros.status ? 'not done' : 'done'}  "),
-                              actions: <Widget>[
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(ctx).pop();
-                                  },
-                                  child: Text("No"),
-                                ),
-                                FlatButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      parametros.status = !parametros.status;
-                                    });
-                                    Navigator.of(ctx).pop();
-                                  },
-                                  child: Text("Yes"),
-                                )
-                              ],
-                            ));
-                  },
+                  onTap: () {},
                   child: Text(
-                    "${parametros.status ? 'Mark as Not Done' : 'Mark as Done'} ",
+                    "${parametros.status ? '' : ''} ",
                     style: TextStyle(color: Colors.white),
                   )),
               VerticalDivider(
