@@ -120,10 +120,7 @@ class _LoginScreenState extends State<tela_login> {
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                       onPressed: () async {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        var show = prefs.getString('parametros');
-                        print(show.toString());
+                        fazerLogin();
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
@@ -143,7 +140,7 @@ class _LoginScreenState extends State<tela_login> {
   }
 
   Future<void> fazerLogin() async {
-    return loginAPI.login(nameController.text, passwordController.text);
+    return loginAPI.login('', '', nameController.text, passwordController.text);
   }
 
   _navegaHomepage(BuildContext context) {

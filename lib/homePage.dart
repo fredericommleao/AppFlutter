@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label
 import 'dart:convert';
+import 'package:aplicativo/Tela_Login.dart';
+import 'package:aplicativo/requisicao_post_http.dart';
 import 'package:aplicativo/todoView.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -73,7 +75,8 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(),
                     child: InkWell(
                       onTap: () async {
-                        update(todos.first);
+                        int x = index;
+                        update(todos.elementAt(index), x);
                       },
                       child: makeListTile(todos[index], index),
                     ),
@@ -93,7 +96,6 @@ class _HomePageState extends State<HomePage> {
     Parametros t = Parametros(ip: '', porta: '', status: true);
     Parametros returnTodo = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => TodoView(parametros: t)));
-
     setState(() {
       todos.add(returnTodo);
     });
@@ -151,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                 color: Color.fromARGB(255, 223, 135, 4), size: 30.0)));
   }
 
-  Future update(Parametros todo) {
+  Future update(Parametros todo, int x) {
     return showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -163,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TodoView(
-                            parametros: todo,
+                            parametros: todos.elementAt(x),
                           ),
                         ));
                     setState(() {
@@ -172,6 +174,20 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Text('ATUALIZAR'),
                 ),
+
+                // ignore: deprecated_member_use
+                FlatButton(
+                    onPressed: () {
+                      todos.elementAt(x);
+
+                      loginAPI.login(todo.ip, todo.porta, '', '');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => tela_login(),
+                          ));
+                    },
+                    child: Text('SELECIONAR'))
               ],
             ));
   }
