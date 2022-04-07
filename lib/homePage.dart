@@ -1,7 +1,5 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label, non_constant_identifier_names
 import 'dart:convert';
-import 'package:aplicativo/Tela_Login.dart';
-import 'package:aplicativo/requisicao_post_http.dart';
 import 'package:aplicativo/todoView.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,29 +10,78 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+late SharedPreferences prefs;
+
 class _HomePageState extends State<HomePage> {
-  late SharedPreferences prefs;
   List todos = [];
-  setupTodo() async {
+
+  exibir() async {
     prefs = await SharedPreferences.getInstance();
     String? stringTodo = prefs.getString('parametros');
     List todoList = jsonDecode(stringTodo.toString());
     for (var todo in todoList) {
       setState(() {
-        todos.add(Parametros(porta: '', status: false, ip: '').fromJson(todo));
+        todos.add(Parametros(porta: '', ip: '').fromJson(todo));
       });
     }
   }
 
-  void saveTodo() {
+  void salvar() {
     List items = todos.map((e) => e.toJson()).toList();
     prefs.setString('parametros', jsonEncode(items));
+  }
+
+  adicionar() async {
+    Parametros t = Parametros(ip: '', porta: '');
+    Parametros returnTodo = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => TodoView(parametros: t)));
+    setState(() {
+      todos.add(returnTodo);
+    });
+    salvar();
+  }
+
+  alterar(int index) async {
+    Parametros returnTodo = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                TodoView(parametros: todos.elementAt(index))));
+    setState(() {});
+    salvar();
+  }
+
+  delete(Parametros todo) {
+    return showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text("Atenção"),
+              content: Text("Deseja realmente apagar ?"),
+              actions: [
+                // ignore: deprecated_member_use
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                    child: Text("No")),
+                // ignore: deprecated_member_use
+                FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        todos.remove(todo);
+                      });
+                      Navigator.pop(ctx);
+                      salvar();
+                    },
+                    child: Text("Yes"))
+              ],
+            ));
   }
 
   @override
   void initState() {
     super.initState();
-    setupTodo();
+    exibir();
   }
 
   Color appcolor = Color.fromARGB(255, 255, 255, 255);
@@ -45,7 +92,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
         onPressed: () async {
-          addTodo();
+          adicionar();
         },
         child: Icon(
           Icons.add,
@@ -75,10 +122,9 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(),
                     child: InkWell(
                       onTap: () async {
-                        int x = index;
-                        update(todos.elementAt(index), x);
+                        escolher_opcao(index);
                       },
-                      child: makeListTile(todos[index], index),
+                      child: gera_lista_tela(todos[index], index),
                     ),
                   ));
             }),
@@ -92,17 +138,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  addTodo() async {
-    Parametros t = Parametros(ip: '', porta: '', status: true);
-    Parametros returnTodo = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => TodoView(parametros: t)));
-    setState(() {
-      todos.add(returnTodo);
-    });
-    saveTodo();
+  escolher_opcao(int indice) {
+    return showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              actions: [
+                // ignore: deprecated_member_use
+                FlatButton(
+                  onPressed: () {
+                    alterar(indice);
+                  },
+                  child: Text('ALTERAR'),
+                ),
+                // ignore: deprecated_member_use
+                FlatButton(onPressed: () {}, child: Text('SELECIONAR'))
+              ],
+            ));
   }
 
-  makeListTile(Parametros todo, index) {
+  gera_lista_tela(Parametros todo, index) {
     return ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
         leading: Container(
@@ -151,71 +205,5 @@ class _HomePageState extends State<HomePage> {
             },
             child: Icon(Icons.delete,
                 color: Color.fromARGB(255, 223, 135, 4), size: 30.0)));
-  }
-
-  Future update(Parametros todo, int x) {
-    return showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              actions: [
-                // ignore: deprecated_member_use
-                FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TodoView(
-                            parametros: todos.elementAt(x),
-                          ),
-                        ));
-                    setState(() {
-                      saveTodo();
-                    });
-                  },
-                  child: Text('ATUALIZAR'),
-                ),
-
-                // ignore: deprecated_member_use
-                FlatButton(
-                    onPressed: () {
-                      todos.elementAt(x);
-
-                      loginAPI.login(todo.ip, todo.porta, '', '');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => tela_login(),
-                          ));
-                    },
-                    child: Text('SELECIONAR'))
-              ],
-            ));
-  }
-
-  delete(Parametros todo) {
-    return showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              title: Text("Atenção"),
-              content: Text("Deseja realmente apagar ?"),
-              actions: [
-                // ignore: deprecated_member_use
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(ctx);
-                    },
-                    child: Text("No")),
-                // ignore: deprecated_member_use
-                FlatButton(
-                    onPressed: () {
-                      setState(() {
-                        todos.remove(todo);
-                      });
-                      Navigator.pop(ctx);
-                      saveTodo();
-                    },
-                    child: Text("Yes"))
-              ],
-            ));
   }
 }

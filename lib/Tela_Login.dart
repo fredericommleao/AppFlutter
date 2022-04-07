@@ -2,11 +2,11 @@
 import 'package:aplicativo/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:aplicativo/requisicao_post_http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /*
   tela de login inicial
  */
+
 class tela_login extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();

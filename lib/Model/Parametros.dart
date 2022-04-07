@@ -2,20 +2,20 @@
 class Parametros {
   late String ip;
   late String porta;
-  late bool status;
 
-  Parametros({required this.ip, required this.porta, required this.status}) {
+  Parametros({required this.ip, required this.porta}) {
     ip = ip;
     porta = porta;
-    status = status;
   }
 
   toJson() {
-    return {"porta": porta, "ip": ip, "status": status};
+    return {
+      "porta": porta,
+      "ip": ip,
+    };
   }
 
   fromJson(json) {
-    return Parametros(
-        ip: json['ip'], porta: json['porta'], status: json['status']);
+    return Parametros(ip: json['ip'], porta: json['porta']);
   }
 }

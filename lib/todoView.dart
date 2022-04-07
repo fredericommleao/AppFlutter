@@ -97,12 +97,7 @@ class _TodoViewState extends State<TodoView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(
-                  onTap: () {},
-                  child: Text(
-                    "${parametros.status ? '' : ''} ",
-                    style: TextStyle(color: Colors.white),
-                  )),
+              InkWell(onTap: () {}, child: Text('')),
               VerticalDivider(
                 color: Colors.white,
               ),
