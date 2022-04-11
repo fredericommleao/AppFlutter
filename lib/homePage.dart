@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label, non_constant_identifier_names, unnecessary_brace_in_string_interps
 import 'dart:convert';
+import 'package:aplicativo/Tela_Login.dart';
 import 'package:aplicativo/todoView.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 223, 135, 4),
-        title: Text("Servidores ",
+        title: Text("Servidores",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 30,
@@ -123,6 +124,8 @@ class _HomePageState extends State<HomePage> {
                     child: InkWell(
                       onTap: () async {
                         escolher_opcao(index);
+
+                        Selecionar(index);
                       },
                       child: gera_lista_tela(todos[index], index),
                     ),
@@ -151,9 +154,18 @@ class _HomePageState extends State<HomePage> {
                   child: Text('ALTERAR'),
                 ),
                 // ignore: deprecated_member_use
-                FlatButton(onPressed: () {}, child: Text('SELECIONAR'))
+                FlatButton(
+                    onPressed: () async {
+                      Selecionar(indice);
+                    },
+                    child: Text('SELECIONAR'))
               ],
             ));
+  }
+
+  Selecionar(int indice) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => tela_login()));
   }
 
   gera_lista_tela(Parametros todo, index) {
@@ -166,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                   Border(right: BorderSide(width: 1.0, color: Colors.black))),
           child: CircleAvatar(
             backgroundColor: Color.fromARGB(255, 223, 135, 4),
-            child: Text("${index + 1}",
+            child: Text("${index}",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,

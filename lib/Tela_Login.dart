@@ -1,4 +1,5 @@
 // ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names
+import 'package:aplicativo/Controller/sharedValues.dart';
 import 'package:aplicativo/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:aplicativo/requisicao_post_http.dart';
@@ -108,27 +109,22 @@ class _LoginScreenState extends State<tela_login> {
                 SizedBox(
                   height: 25,
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: size.height / 10,
-                    width: size.width,
-                    child: ElevatedButton(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      onPressed: () async {
-                        fazerLogin();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 120, vertical: 20),
-                          primary: Colors.orange,
-                          textStyle:
-                              TextStyle(fontSize: 25, color: Colors.black12)),
+                Container(
+                  alignment: Alignment.center,
+                  height: size.height / 10,
+                  width: size.width,
+                  child: ElevatedButton(
+                    child: Text(
+                      'Login',
+                      style: TextStyle(fontWeight: FontWeight.w600),
                     ),
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 120, vertical: 20),
+                        primary: Colors.orange,
+                        textStyle:
+                            TextStyle(fontSize: 25, color: Colors.black12)),
                   ),
                 ),
               ],
@@ -139,8 +135,13 @@ class _LoginScreenState extends State<tela_login> {
     );
   }
 
-  Future<void> fazerLogin() async {
-    return loginAPI.login('', '', nameController.text, passwordController.text);
+  Future<void> fazerLogin(int indice) async {
+    var x = await SharedValues.exibirIp(indice);
+    var z = await SharedValues.exibirPorta(indice);
+
+    loginAPI login = loginAPI();
+
+    login.login(x, z, nameController.text, passwordController.text);
   }
 
   _navegaHomepage(BuildContext context) {
