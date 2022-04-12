@@ -1,9 +1,14 @@
-// ignore_for_file: camel_case_types, avoid_print, body_might_complete_normally_nullable
+// ignore_for_file: camel_case_types, avoid_print, body_might_complete_normally_nullable, non_constant_identifier_names, prefer_typing_uninitialized_variables
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class loginAPI {
-  Future<void> login(var ip, var porta, String user, String pass) async {
+  late var ip;
+  late var porta;
+
+  loginAPI(this.ip, this.porta);
+
+  PostHttp(String user, String pass) async {
     try {
       var requisicao = Uri.parse(
           'http://$ip:$porta/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
@@ -23,7 +28,7 @@ class loginAPI {
 
       print(responseFull);
     } catch (exception) {
-      print('erro');
+      print('erro, não houve conexão');
     }
   }
 }

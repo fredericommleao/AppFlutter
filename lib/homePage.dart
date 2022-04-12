@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label, non_constant_identifier_names, unnecessary_brace_in_string_interps
 import 'dart:convert';
-import 'package:aplicativo/Tela_Login.dart';
+import 'package:aplicativo/Controller/sharedValues.dart';
 import 'package:aplicativo/todoView.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +14,16 @@ class HomePage extends StatefulWidget {
 late SharedPreferences prefs;
 
 class _HomePageState extends State<HomePage> {
+  var colorIndex = 0;
+
   List todos = [];
+
+  Future<int?> selectColorList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('value', colorIndex);
+    var retorno = prefs.getInt('value');
+    return retorno;
+  }
 
   exibir() async {
     prefs = await SharedPreferences.getInstance();
@@ -82,6 +91,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    selectColorList();
     exibir();
   }
 
@@ -117,6 +127,8 @@ class _HomePageState extends State<HomePage> {
             itemCount: todos.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
+                  color:
+                      colorIndex == index ? Colors.orangeAccent : Colors.white,
                   margin: EdgeInsets.all(4),
                   elevation: 10,
                   child: Container(
@@ -124,8 +136,6 @@ class _HomePageState extends State<HomePage> {
                     child: InkWell(
                       onTap: () async {
                         escolher_opcao(index);
-
-                        Selecionar(index);
                       },
                       child: gera_lista_tela(todos[index], index),
                     ),
@@ -156,16 +166,19 @@ class _HomePageState extends State<HomePage> {
                 // ignore: deprecated_member_use
                 FlatButton(
                     onPressed: () async {
-                      Selecionar(indice);
+                      SharedValues value = SharedValues(indice);
+                      var x = await value.exibirIp();
+                      var y = await value.exibirPorta();
+
+                      setState(() {
+                        colorIndex = indice;
+                      });
+
+                      value.padraoLogin(x, y);
                     },
                     child: Text('SELECIONAR'))
               ],
             ));
-  }
-
-  Selecionar(int indice) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => tela_login()));
   }
 
   gera_lista_tela(Parametros todo, index) {

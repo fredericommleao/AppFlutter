@@ -1,8 +1,8 @@
-// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names
-import 'package:aplicativo/Controller/sharedValues.dart';
+// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names, await_only_futures
 import 'package:aplicativo/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:aplicativo/requisicao_post_http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /*
   tela de login inicial
@@ -118,7 +118,9 @@ class _LoginScreenState extends State<tela_login> {
                       'Login',
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      fazerLogin(nameController.text, passwordController.text);
+                    },
                     style: ElevatedButton.styleFrom(
                         padding:
                             EdgeInsets.symmetric(horizontal: 120, vertical: 20),
@@ -135,13 +137,15 @@ class _LoginScreenState extends State<tela_login> {
     );
   }
 
-  Future<void> fazerLogin(int indice) async {
-    var x = await SharedValues.exibirIp(indice);
-    var z = await SharedValues.exibirPorta(indice);
+  Future<void> fazerLogin(String user, String pass) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    loginAPI login = loginAPI();
+    var ip = await prefs.getString('ip');
+    var porta = await prefs.getString('porta');
 
-    login.login(x, z, nameController.text, passwordController.text);
+    loginAPI login = loginAPI(ip, porta);
+
+    login.PostHttp(user, pass);
   }
 
   _navegaHomepage(BuildContext context) {
