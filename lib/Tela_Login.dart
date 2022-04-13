@@ -119,7 +119,9 @@ class _LoginScreenState extends State<tela_login> {
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                     onPressed: () {
-                      fazerLogin(nameController.text, passwordController.text);
+                      bool x = fazerLogin(
+                          nameController.text, passwordController.text) as bool;
+                      if (x == false) {}
                     },
                     style: ElevatedButton.styleFrom(
                         padding:

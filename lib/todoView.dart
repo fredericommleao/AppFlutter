@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, file_names, no_logic_in_create_state, use_key_in_widget_constructors, must_be_immutable, deprecated_member_use
 import 'package:aplicativo/Model/Parametros.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TodoView extends StatefulWidget {
@@ -28,6 +29,7 @@ class _TodoViewState extends State<TodoView> {
     return Scaffold(
       backgroundColor: Color.fromARGB(240, 255, 255, 255),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 25,
         backgroundColor: Color.fromARGB(255, 223, 135, 4),
@@ -97,7 +99,20 @@ class _TodoViewState extends State<TodoView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(onTap: () {}, child: Text('')),
+              InkWell(
+                  onTap: () {},
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.cancel,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context, parametros);
+                      if (ipController.text == '' ||
+                          portaController.text == '') {}
+                    },
+                  )),
               VerticalDivider(
                 color: Colors.white,
               ),
@@ -105,9 +120,14 @@ class _TodoViewState extends State<TodoView> {
                 icon: Icon(
                   Icons.save,
                   color: Color.fromARGB(255, 255, 255, 255),
+                  size: 30,
                 ),
                 onPressed: () {
-                  Navigator.pop(context, parametros);
+                  if (ipController.text == '' || portaController.text == '') {
+                    campoVazio();
+                  } else {
+                    Navigator.pop(context, parametros);
+                  }
                 },
               )
             ],
@@ -116,6 +136,22 @@ class _TodoViewState extends State<TodoView> {
       ),
     );
   }
+
+  campoVazio() => showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Os campos abaixo devem estar preenchidos."),
+          actions: [
+            CupertinoDialogAction(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+        barrierDismissible: false,
+      );
 
   Widget colorOverride(Widget child) {
     return Theme(

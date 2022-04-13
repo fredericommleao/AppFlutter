@@ -33,4 +33,9 @@ class SharedValues {
     prefs.setString('ip', ip);
     prefs.setString('porta', porta);
   }
+
+  marcarPadrao(int indice) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('indice', indice);
+  }
 }
