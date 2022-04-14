@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names, await_only_futures
+// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names, await_only_futures, avoid_unnecessary_containers
 import 'package:aplicativo/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:aplicativo/requisicao_post_http.dart';
@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 /*
   tela de login inicial
  */
-
 class tela_login extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -29,34 +28,32 @@ class _LoginScreenState extends State<tela_login> {
         actions: [
           Padding(
               padding: EdgeInsets.only(
-                right: 25.0,
+                right: 20.0,
               ),
               child: PopupMenuButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                ),
                 itemBuilder: (context) => [
                   PopupMenuItem(
                     child: Row(
                       children: [
                         ButtonBar(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    _navegaHomepage(context);
-                                  },
-                                  child: const Text(
-                                    'Alterar servidor',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                              ],
+                            TextButton(
+                              onPressed: () {
+                                _navegaHomepage(context);
+                              },
+                              child: const Text(
+                                'Alterar servidor',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black),
+                              ),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -72,7 +69,7 @@ class _LoginScreenState extends State<tela_login> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+            padding: const EdgeInsets.all(12.5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -87,11 +84,12 @@ class _LoginScreenState extends State<tela_login> {
                 TextField(
                   controller: nameController,
                   decoration: InputDecoration(
-                      labelText: "USUÁRIO",
-                      labelStyle:
-                          TextStyle(fontSize: 15, color: Colors.grey.shade900),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                    labelText: "USUÁRIO",
+                    labelStyle:
+                        TextStyle(fontSize: 15, color: Colors.grey.shade900),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
                 ),
                 SizedBox(
                   height: 15,
@@ -100,35 +98,37 @@ class _LoginScreenState extends State<tela_login> {
                   obscureText: true,
                   controller: passwordController,
                   decoration: InputDecoration(
-                      labelText: "SENHA",
-                      labelStyle:
-                          TextStyle(fontSize: 15, color: Colors.grey.shade900),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                    labelText: "SENHA",
+                    labelStyle: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey.shade900,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 25,
                 ),
                 Container(
                   alignment: Alignment.center,
-                  height: size.height / 10,
-                  width: size.width,
+                  height: size.height / 8,
                   child: ElevatedButton(
                     child: Text(
                       'Login',
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 30),
                     ),
                     onPressed: () {
-                      bool x = fazerLogin(
-                          nameController.text, passwordController.text) as bool;
-                      if (x == false) {}
+                      fazerLogin(nameController.text, passwordController.text);
                     },
                     style: ElevatedButton.styleFrom(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 120, vertical: 20),
+                            EdgeInsets.symmetric(horizontal: 90, vertical: 20),
                         primary: Colors.orange,
-                        textStyle:
-                            TextStyle(fontSize: 25, color: Colors.black12)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25))),
                   ),
                 ),
               ],
