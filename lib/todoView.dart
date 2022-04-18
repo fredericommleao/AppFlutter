@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, file_names, no_logic_in_create_state, use_key_in_widget_constructors, must_be_immutable, deprecated_member_use
 import 'package:aplicativo/Model/Parametros.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,9 @@ class _TodoViewState extends State<TodoView> {
   _TodoViewState({required this.parametros});
   TextEditingController ipController = TextEditingController();
   TextEditingController portaController = TextEditingController();
+
+  var ip = MaskTextInputFormatter(mask: '###.###.###.###');
+  var porta = MaskTextInputFormatter(mask: '####');
 
   @override
   void initState() {
@@ -52,6 +56,7 @@ class _TodoViewState extends State<TodoView> {
               ),
               Container(
                   child: colorOverride(TextField(
+                inputFormatters: [ip],
                 onChanged: (data) {
                   parametros.ip = data;
                 },
@@ -59,6 +64,7 @@ class _TodoViewState extends State<TodoView> {
                 decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.black),
                   labelText: "Digite o IP",
+                  hintText: "000.000.000.000",
                   fillColor: Colors.black,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),
@@ -72,6 +78,7 @@ class _TodoViewState extends State<TodoView> {
               ),
               Container(
                   child: colorOverride(TextField(
+                inputFormatters: [porta],
                 maxLines: 1,
                 onChanged: (data) {
                   parametros.porta = data;
@@ -80,6 +87,7 @@ class _TodoViewState extends State<TodoView> {
                 decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.black),
                   labelText: "Digite a porta",
+                  hintText: "0000",
                   fillColor: Colors.black,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),
@@ -108,9 +116,7 @@ class _TodoViewState extends State<TodoView> {
                       size: 30,
                     ),
                     onPressed: () {
-                      Navigator.pop(context, parametros);
-                      if (ipController.text == '' ||
-                          portaController.text == '') {}
+                      Navigator.pop(context);
                     },
                   )),
               VerticalDivider(
@@ -137,6 +143,12 @@ class _TodoViewState extends State<TodoView> {
     );
   }
 
+  campoValido() {}
+
+  /*
+  Caso o icone de salvar seja pressionado e os campos de inputs estejam vazios, essa função será acionada
+  impedindo o salvamento dos parametros vazios.
+   */
   campoVazio() => showDialog(
         context: context,
         builder: (_) => AlertDialog(
