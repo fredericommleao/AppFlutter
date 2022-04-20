@@ -1,24 +1,29 @@
 // ignore_for_file: prefer_const_constructors, file_names, no_logic_in_create_state, use_key_in_widget_constructors, must_be_immutable, deprecated_member_use
 import 'package:aplicativo/Model/Parametros.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TodoView extends StatefulWidget {
+class NovoServidor extends StatefulWidget {
   Parametros parametros;
-  TodoView({required this.parametros}) : super();
+  NovoServidor({required this.parametros}) : super();
 
   @override
-  _TodoViewState createState() => _TodoViewState(parametros: parametros);
+  _NovoServidorState createState() =>
+      _NovoServidorState(parametros: parametros);
 }
 
-class _TodoViewState extends State<TodoView> {
+class _NovoServidorState extends State<NovoServidor> {
   Parametros parametros;
-  _TodoViewState({required this.parametros});
+  _NovoServidorState({required this.parametros});
+  //atributo responsavel por capturar o ip digitado
   TextEditingController ipController = TextEditingController();
+  //atributo responsavel por capturar a porta digitada
   TextEditingController portaController = TextEditingController();
 
+  //variavel que recebe o formato válido do IP
   var ip = MaskTextInputFormatter(mask: '###.###.###.###');
+
+  //variavel que recebe o formato válido da Porta
   var porta = MaskTextInputFormatter(mask: '####');
 
   @override
@@ -31,31 +36,32 @@ class _TodoViewState extends State<TodoView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(240, 255, 255, 255),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 25,
         backgroundColor: Color.fromARGB(255, 223, 135, 4),
-        title: Text(
-          "Novo servidor",
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
-        ),
+        title: Text("Novo servidor",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.w400)),
       ),
-      body: AlertDialog(
-        title: Container(
-          padding: EdgeInsets.all(25),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(30),
           child: Column(
             children: [
               Text(
-                'DIGITE O IP E PORTA DO NOVO SERVIDOR',
-                style: TextStyle(fontSize: 18.5),
+                'DIGITE O IP E A PORTA DO NOVO SERVIDOR',
+                style: TextStyle(fontSize: 15),
               ),
               SizedBox(
-                height: 20,
+                height: 15,
               ),
               Container(
-                  child: colorOverride(TextField(
+                  child: (TextField(
                 inputFormatters: [ip],
                 onChanged: (data) {
                   parametros.ip = data;
@@ -74,10 +80,10 @@ class _TodoViewState extends State<TodoView> {
                 controller: ipController,
               ))),
               SizedBox(
-                height: 20,
+                height: 15,
               ),
               Container(
-                  child: colorOverride(TextField(
+                  child: (TextField(
                 inputFormatters: [porta],
                 maxLines: 1,
                 onChanged: (data) {
@@ -129,11 +135,7 @@ class _TodoViewState extends State<TodoView> {
                   size: 30,
                 ),
                 onPressed: () {
-                  if (ipController.text == '' || portaController.text == '') {
-                    campoVazio();
-                  } else {
-                    Navigator.pop(context, parametros);
-                  }
+                  regraValidacao();
                 },
               )
             ],
@@ -143,34 +145,58 @@ class _TodoViewState extends State<TodoView> {
     );
   }
 
-  campoValido() {}
+  /*Regra de validação de inputs: 
+  - inputs não podem ser vázios, 
+  - formato do ip deve ser válido 
+  - formato da porta deve conter 4 digitos 
+  
+   *As duas funções abaixo, são responsavéis pela validação das regras,
+    a função regraValidacao() realiza as tomadas de decisões e caso não 
+    seja valido retorna a funcao mensagemInvalido(), 
+    caso os inputs sejam válidos o último else retorna no Navigator 
+    que fecha a rota do widget repassando os novos parametros para a lista.
+  
+  */
 
-  /*
-  Caso o icone de salvar seja pressionado e os campos de inputs estejam vazios, essa função será acionada
-  impedindo o salvamento dos parametros vazios.
-   */
-  campoVazio() => showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text("Os campos abaixo devem estar preenchidos."),
-          actions: [
-            CupertinoDialogAction(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
+  regraValidacao() {
+    var ip = ipController.text.length;
+    var porta = portaController.text.length;
+    if (ipController.text == '' || portaController.text == '') {
+      return mensagemInvalido();
+    } else if (ip < 13 || porta < 4) {
+      return mensagemInvalido();
+    } else {
+      return Navigator.pop(context, parametros);
+    }
+  }
+
+  mensagemInvalido() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(
+          "Erro, possíveis causas:",
+          style: TextStyle(fontSize: 20),
         ),
-        barrierDismissible: false,
-      );
-
-  Widget colorOverride(Widget child) {
-    return Theme(
-      data: ThemeData(
-        primaryColor: Colors.orange,
+        content: Text(
+          'Campo(s) vazio(s)\nformato de IP '
+          'inválido\nformato de Porta inválida',
+          style: TextStyle(fontSize: 17),
+        ),
+        actions: [
+          FlatButton(
+            color: Color.fromARGB(255, 223, 135, 4),
+            child: Text(
+              'OK',
+              style: TextStyle(fontSize: 15),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
-      child: child,
+      barrierDismissible: false,
     );
   }
 }

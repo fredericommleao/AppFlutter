@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, unused_import, prefer_collection_literals
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Parametros {

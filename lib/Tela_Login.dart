@@ -1,7 +1,10 @@
-// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names, await_only_futures, avoid_unnecessary_containers
+// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names, await_only_futures, avoid_unnecessary_containers, deprecated_member_use
+import 'dart:convert';
+
 import 'package:aplicativo/servidores.dart';
+import 'package:aplicativo/tela_entrou.dart';
 import 'package:flutter/material.dart';
-import 'package:aplicativo/requisicao_post_http.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /*
@@ -121,7 +124,7 @@ class _LoginScreenState extends State<tela_login> {
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 30),
                     ),
                     onPressed: () {
-                      fazerLogin(nameController.text, passwordController.text);
+                      PostHttp(nameController.text, passwordController.text);
                     },
                     style: ElevatedButton.styleFrom(
                         padding:
@@ -139,15 +142,96 @@ class _LoginScreenState extends State<tela_login> {
     );
   }
 
-  Future<void> fazerLogin(String user, String pass) async {
+  PostHttp(
+    String user,
+    String pass,
+  ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var ip = await prefs.getString('ip');
     var porta = await prefs.getString('porta');
 
-    loginAPI login = loginAPI(ip, porta);
+    try {
+      var requisicao = Uri.parse(
+          'http://$ip:$porta/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
 
-    login.PostHttp(user, pass);
+      var body = json.encode({
+        "serviceName": "MobileLoginSP.login",
+        "requestBody": {
+          "NOMUSU": {"\$": user},
+          "INTERNO": {"\$": pass}
+        }
+      });
+
+      var resposta = await http.post(requisicao,
+          headers: {"Content-Type": "application/json"}, body: body);
+
+      print(resposta.contentLength);
+
+      if (resposta.contentLength == 234) {
+        usuario_senha_incorreto();
+      } else {
+        var responseFull = json.decode(resposta.body);
+        _navegaEntrou(context);
+        print(responseFull);
+      }
+    } catch (exception) {
+      enderecoNaoEncontrou();
+    }
+  }
+
+  enderecoNaoEncontrou() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(
+          "Erro, endereço inexistente",
+          style: TextStyle(fontSize: 20),
+        ),
+        actions: [
+          FlatButton(
+            color: Color.fromARGB(255, 223, 135, 4),
+            child: Text(
+              'OK',
+              style: TextStyle(fontSize: 15),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  usuario_senha_incorreto() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(
+          "Usuário ou senha incorretos.",
+          style: TextStyle(fontSize: 20),
+        ),
+        actions: [
+          FlatButton(
+            color: Color.fromARGB(255, 223, 135, 4),
+            child: Text(
+              'OK',
+              style: TextStyle(fontSize: 15),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  _navegaEntrou(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Entrou()));
   }
 
   _navegaHomepage(BuildContext context) {

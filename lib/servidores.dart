@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label, non_constant_identifier_names, unnecessary_brace_in_string_interps, prefer_typing_uninitialized_variables, unused_local_variable, avoid_unnecessary_containers, deprecated_member_use
 import 'dart:convert';
 import 'package:aplicativo/Controller/sharedValues.dart';
-import 'package:aplicativo/Tela_Login.dart';
-import 'package:aplicativo/todoView.dart';
+import 'package:aplicativo/tela_login.dart';
+import 'package:aplicativo/novo_servidor.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Model/Parametros.dart';
@@ -13,7 +13,8 @@ class Servidores extends StatefulWidget {
 }
 
 late SharedPreferences
-    prefs; //variavel global de sharedPreferences que é instanciada diversas vezes na classe
+    //variavel global de sharedPreferences que é instanciada diversas vezes na classe
+    prefs;
 
 class _ServidoresState extends State<Servidores> {
   /*Atributo do tipo lista, que será chamado nas principais funções da classe, pois é ela que armazena
@@ -58,7 +59,7 @@ class _ServidoresState extends State<Servidores> {
   adicionar_parametro() async {
     Parametros t = Parametros(ip: '', porta: '');
     Parametros returnList = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => TodoView(parametros: t)));
+        MaterialPageRoute(builder: (context) => NovoServidor(parametros: t)));
     setState(() {
       todos.add(returnList);
     });
@@ -80,7 +81,7 @@ class _ServidoresState extends State<Servidores> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                TodoView(parametros: todos.elementAt(index))));
+                NovoServidor(parametros: todos.elementAt(index))));
 
     salvar_parametro();
   }
@@ -151,7 +152,7 @@ class _ServidoresState extends State<Servidores> {
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 30,
-                fontWeight: FontWeight.w300)),
+                fontWeight: FontWeight.w400)),
       ),
       body: Container(
         color: Color.fromARGB(0, 255, 255, 255),
@@ -188,7 +189,7 @@ class _ServidoresState extends State<Servidores> {
     return showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              title: Text("Escolha uma opção :",
+              title: Text("Escolha uma opção",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
               actions: [
                 FlatButton(
@@ -199,7 +200,7 @@ class _ServidoresState extends State<Servidores> {
                   child: Text(
                     'ALTERAR',
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                         color: Colors.white),
                   ),
@@ -218,7 +219,7 @@ class _ServidoresState extends State<Servidores> {
                     child: Text(
                       'SELECIONAR',
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                           fontWeight: FontWeight.w500,
                           color: Colors.white),
                     ))
