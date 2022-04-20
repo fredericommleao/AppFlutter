@@ -11,7 +11,7 @@ class loginAPI {
   PostHttp(String user, String pass) async {
     try {
       var requisicao = Uri.parse(
-          'http://$ip:$porta/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
+          'http://socialdistribuidora.no-ip.biz:8280/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
 
       var body = json.encode({
         "serviceName": "MobileLoginSP.login",

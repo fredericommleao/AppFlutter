@@ -153,7 +153,7 @@ class _LoginScreenState extends State<tela_login> {
 
     try {
       var requisicao = Uri.parse(
-          'http://$ip:$porta/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
+          'http://socialdistribuidora.no-ip.biz:8280/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
 
       var body = json.encode({
         "serviceName": "MobileLoginSP.login",
