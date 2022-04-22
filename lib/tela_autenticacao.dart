@@ -1,15 +1,16 @@
 // ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, camel_case_types, non_constant_identifier_names, await_only_futures, avoid_unnecessary_containers, deprecated_member_use
 import 'dart:convert';
-
-import 'package:aplicativo/servidores.dart';
+import 'package:aplicativo/tela_servidores.dart';
 import 'package:aplicativo/tela_entrou.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 /*
   tela de login inicial
  */
+
 class tela_login extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -18,16 +19,13 @@ class tela_login extends StatefulWidget {
 class _LoginScreenState extends State<tela_login> {
   //captura texto textfield
   final TextEditingController nameController = TextEditingController();
-
   //captura texto textfield
   final TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(250, 250, 250, 250),
+        backgroundColor: Color.fromARGB(195, 250, 250, 250),
         actions: [
           Padding(
               padding: EdgeInsets.only(
@@ -51,6 +49,7 @@ class _LoginScreenState extends State<tela_login> {
                                 'Alterar servidor',
                                 style: TextStyle(
                                     fontSize: 20,
+                                    fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w400,
                                     color: Colors.black),
                               ),
@@ -63,7 +62,7 @@ class _LoginScreenState extends State<tela_login> {
                 ],
                 child: Icon(
                   Icons.read_more_outlined,
-                  color: Color.fromARGB(255, 223, 135, 4),
+                  color: HexColor("#E8882B"),
                   size: 50,
                 ),
               ))
@@ -72,9 +71,9 @@ class _LoginScreenState extends State<tela_login> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.all(12.5),
+            padding: const EdgeInsets.all(35),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(
                   child: Image.asset(
@@ -82,20 +81,23 @@ class _LoginScreenState extends State<tela_login> {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 20,
                 ),
                 TextField(
                   controller: nameController,
                   decoration: InputDecoration(
                     labelText: "USUÁRIO",
-                    labelStyle:
-                        TextStyle(fontSize: 15, color: Colors.grey.shade900),
+                    labelStyle: TextStyle(
+                      fontSize: 12.5,
+                      color: Colors.grey.shade900,
+                      fontFamily: 'Montserrat',
+                    ),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)),
+                        borderRadius: BorderRadius.circular(25)),
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 20,
                 ),
                 TextField(
                   obscureText: true,
@@ -103,36 +105,35 @@ class _LoginScreenState extends State<tela_login> {
                   decoration: InputDecoration(
                     labelText: "SENHA",
                     labelStyle: TextStyle(
-                      fontSize: 15,
+                      fontFamily: 'Montserrat',
+                      fontSize: 12.5,
                       color: Colors.grey.shade900,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(25),
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 25,
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  height: size.height / 8,
-                  child: ElevatedButton(
-                    child: Text(
-                      'Login',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 30),
-                    ),
-                    onPressed: () {
-                      PostHttp(nameController.text, passwordController.text);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 90, vertical: 20),
-                        primary: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25))),
+                ElevatedButton(
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                        fontFamily: 'Montserrat'),
                   ),
+                  onPressed: () {
+                    PostHttp(nameController.text, passwordController.text);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 85, vertical: 12.5),
+                      primary: HexColor("#E8882B"),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25))),
                 ),
               ],
             ),
@@ -153,7 +154,7 @@ class _LoginScreenState extends State<tela_login> {
 
     try {
       var requisicao = Uri.parse(
-          'http://socialdistribuidora.no-ip.biz:8280/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
+          'http://$ip:$porta/mge/service.sbr?outputType=json&serviceName=MobileLoginSP.login');
 
       var body = json.encode({
         "serviceName": "MobileLoginSP.login",

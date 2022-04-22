@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, file_names, no_logic_in_create_state, use_key_in_widget_constructors, must_be_immutable, deprecated_member_use
 import 'package:aplicativo/Model/Parametros.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
@@ -41,12 +42,13 @@ class _NovoServidorState extends State<NovoServidor> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 25,
-        backgroundColor: Color.fromARGB(255, 223, 135, 4),
+        backgroundColor: HexColor("#E8882B"),
         title: Text("Novo servidor",
             style: TextStyle(
                 color: Colors.white,
+                fontFamily: 'Ariel',
                 fontSize: 30,
-                fontWeight: FontWeight.w400)),
+                fontWeight: FontWeight.w300)),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -55,7 +57,10 @@ class _NovoServidorState extends State<NovoServidor> {
             children: [
               Text(
                 'DIGITE O IP E A PORTA DO NOVO SERVIDOR',
-                style: TextStyle(fontSize: 15),
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Ariel',
+                ),
               ),
               SizedBox(
                 height: 15,
@@ -68,7 +73,7 @@ class _NovoServidorState extends State<NovoServidor> {
                 },
                 style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: TextStyle(color: Colors.black, fontSize: 12.5),
                   labelText: "Digite o IP",
                   hintText: "000.000.000.000",
                   fillColor: Colors.black,
@@ -91,7 +96,7 @@ class _NovoServidorState extends State<NovoServidor> {
                 },
                 style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: TextStyle(color: Colors.black, fontSize: 12.5),
                   labelText: "Digite a porta",
                   hintText: "0000",
                   fillColor: Colors.black,
@@ -109,7 +114,7 @@ class _NovoServidorState extends State<NovoServidor> {
       bottomNavigationBar: SizedBox(
         height: 55.0,
         child: BottomAppBar(
-          color: Color.fromARGB(255, 223, 135, 4),
+          color: HexColor("#E8882B"),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -185,7 +190,7 @@ class _NovoServidorState extends State<NovoServidor> {
         ),
         actions: [
           FlatButton(
-            color: Color.fromARGB(255, 223, 135, 4),
+            color: HexColor("#E8882B"),
             child: Text(
               'OK',
               style: TextStyle(fontSize: 15),

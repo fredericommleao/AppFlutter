@@ -1,9 +1,10 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label, non_constant_identifier_names, unnecessary_brace_in_string_interps, prefer_typing_uninitialized_variables, unused_local_variable, avoid_unnecessary_containers, deprecated_member_use
 import 'dart:convert';
 import 'package:aplicativo/Controller/sharedValues.dart';
-import 'package:aplicativo/tela_login.dart';
-import 'package:aplicativo/novo_servidor.dart';
+import 'package:aplicativo/tela_autenticacao.dart';
+import 'package:aplicativo/tela_novo_servidor.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Model/Parametros.dart';
 
@@ -20,7 +21,6 @@ class _ServidoresState extends State<Servidores> {
   /*Atributo do tipo lista, que será chamado nas principais funções da classe, pois é ela que armazena
   */
   List todos = [];
-
   /*
   Essa função é responsável por recuperar os parametros digitado pelo usuário e exibir na tela,
   o sharedpreferences faz a busca dos que já foi salvado na memoria e os carrega para a exibição.
@@ -74,7 +74,6 @@ class _ServidoresState extends State<Servidores> {
   função de 'adicionar_parametro()' porém agora será passado como parâmetro o indice da lista correspondente 
   do card selecionado, fazendo assim com que ao carregar a tela 'Novo servidor' seja exibido os dados
   mostrados no Card que foi selecionado, podendo ser salvos novamente com novos valores.
-  
   */
   alterar_parametro(int index) async {
     Parametros returnList = await Navigator.push(
@@ -136,7 +135,7 @@ class _ServidoresState extends State<Servidores> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.orange,
+        backgroundColor: HexColor("#E8882B"),
         onPressed: () async {
           adicionar_parametro();
         },
@@ -147,12 +146,13 @@ class _ServidoresState extends State<Servidores> {
       ),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(223, 135, 4, 1),
+        backgroundColor: HexColor("#E8882B"),
         title: Text("Servidores",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 30,
-                fontWeight: FontWeight.w400)),
+                fontWeight: FontWeight.w300,
+                fontFamily: 'Ariel')),
       ),
       body: Container(
         color: Color.fromARGB(0, 255, 255, 255),
@@ -162,9 +162,9 @@ class _ServidoresState extends State<Servidores> {
             itemBuilder: (BuildContext context, int index) {
               return Card(
                   color: prefs.getInt('indice') == index
-                      ? Color.fromARGB(255, 255, 186, 83)
+                      ? Color.fromARGB(255, 255, 192, 98)
                       : Colors.white,
-                  margin: EdgeInsets.all(5),
+                  margin: EdgeInsets.all(2.5),
                   elevation: 10,
                   child: Container(
                     child: InkWell(
@@ -177,7 +177,7 @@ class _ServidoresState extends State<Servidores> {
             }),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Color.fromARGB(255, 223, 135, 4),
+        color: HexColor("#E8882B"),
         shape: const CircularNotchedRectangle(),
         child: Container(height: 50.0),
       ),
@@ -242,8 +242,10 @@ class _ServidoresState extends State<Servidores> {
   conteudo_cards(Parametros todo, index) {
     index++;
     return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.5),
         leading: Container(
+          width: 50,
+          height: 50,
           padding: EdgeInsets.only(right: 15.0),
           decoration: BoxDecoration(
               border:
@@ -264,7 +266,7 @@ class _ServidoresState extends State<Servidores> {
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.normal,
-                fontSize: 25,
+                fontSize: 20,
               ),
             ),
             SizedBox(
@@ -280,7 +282,7 @@ class _ServidoresState extends State<Servidores> {
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
-                    fontSize: 20))
+                    fontSize: 15))
           ],
         ),
         trailing: InkWell(
@@ -288,6 +290,6 @@ class _ServidoresState extends State<Servidores> {
               delete_parametro(todo);
             },
             child: Icon(Icons.delete,
-                color: Color.fromARGB(255, 223, 135, 4), size: 40.0)));
+                color: Color.fromARGB(255, 223, 135, 4), size: 35.0)));
   }
 }
