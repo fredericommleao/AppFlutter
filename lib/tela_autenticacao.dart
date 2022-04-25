@@ -7,16 +7,12 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-/*
-  tela de login inicial
- */
-
-class tela_login extends StatefulWidget {
+class Autenticacao extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _AutenticacaoState createState() => _AutenticacaoState();
 }
 
-class _LoginScreenState extends State<tela_login> {
+class _AutenticacaoState extends State<Autenticacao> {
   //captura texto textfield
   final TextEditingController nameController = TextEditingController();
   //captura texto textfield
@@ -25,6 +21,7 @@ class _LoginScreenState extends State<tela_login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(195, 250, 250, 250),
         actions: [
           Padding(
@@ -43,7 +40,7 @@ class _LoginScreenState extends State<tela_login> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                _navegaHomepage(context);
+                                navegaHomepage(context);
                               },
                               child: const Text(
                                 'Alterar servidor',
@@ -167,18 +164,40 @@ class _LoginScreenState extends State<tela_login> {
       var resposta = await http.post(requisicao,
           headers: {"Content-Type": "application/json"}, body: body);
 
-      print(resposta.contentLength);
-
-      if (resposta.contentLength == 234) {
-        usuario_senha_incorreto();
+      if (resposta.contentLength == 279) {
+        navegaEntrou(context);
+        mensagem(resposta.body);
       } else {
-        var responseFull = json.decode(resposta.body);
-        _navegaEntrou(context);
-        print(responseFull);
+        mensagem(resposta.body);
       }
     } catch (exception) {
       enderecoNaoEncontrou();
     }
+  }
+
+  mensagem(String mgn) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(
+          mgn,
+          style: TextStyle(fontSize: 15),
+        ),
+        actions: [
+          FlatButton(
+            color: Color.fromARGB(255, 223, 135, 4),
+            child: Text(
+              'OK',
+              style: TextStyle(fontSize: 15),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
   }
 
   enderecoNaoEncontrou() {
@@ -187,7 +206,7 @@ class _LoginScreenState extends State<tela_login> {
       builder: (_) => AlertDialog(
         title: Text(
           "Erro, endereço inexistente",
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 17.5),
         ),
         actions: [
           FlatButton(
@@ -206,36 +225,11 @@ class _LoginScreenState extends State<tela_login> {
     );
   }
 
-  usuario_senha_incorreto() {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(
-          "Usuário ou senha incorretos.",
-          style: TextStyle(fontSize: 20),
-        ),
-        actions: [
-          FlatButton(
-            color: Color.fromARGB(255, 223, 135, 4),
-            child: Text(
-              'OK',
-              style: TextStyle(fontSize: 15),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-      barrierDismissible: false,
-    );
-  }
-
-  _navegaEntrou(BuildContext context) {
+  navegaEntrou(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Entrou()));
   }
 
-  _navegaHomepage(BuildContext context) {
+  navegaHomepage(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => Servidores()));
   }

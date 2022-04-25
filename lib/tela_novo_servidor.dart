@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, file_names, no_logic_in_create_state, use_key_in_widget_constructors, must_be_immutable, deprecated_member_use
-import 'package:aplicativo/Model/Parametros.dart';
+import 'package:aplicativo/Modelo/Parametros.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +20,6 @@ class _NovoServidorState extends State<NovoServidor> {
   TextEditingController ipController = TextEditingController();
   //atributo responsavel por capturar a porta digitada
   TextEditingController portaController = TextEditingController();
-
-  //variavel que recebe o formato válido do IP
-  var ip = MaskTextInputFormatter(mask: '###.###.###.###');
 
   //variavel que recebe o formato válido da Porta
   var porta = MaskTextInputFormatter(mask: '####');
@@ -55,19 +52,12 @@ class _NovoServidorState extends State<NovoServidor> {
           padding: EdgeInsets.all(30),
           child: Column(
             children: [
-              Text(
-                'DIGITE O IP E A PORTA DO NOVO SERVIDOR',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Ariel',
-                ),
-              ),
               SizedBox(
                 height: 15,
               ),
               Container(
                   child: (TextField(
-                inputFormatters: [ip],
+                //inputFormatters: [ip],
                 onChanged: (data) {
                   parametros.ip = data;
                 },
@@ -75,7 +65,6 @@ class _NovoServidorState extends State<NovoServidor> {
                 decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.black, fontSize: 12.5),
                   labelText: "Digite o IP",
-                  hintText: "000.000.000.000",
                   fillColor: Colors.black,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),
@@ -181,12 +170,12 @@ class _NovoServidorState extends State<NovoServidor> {
       builder: (_) => AlertDialog(
         title: Text(
           "Erro, possíveis causas:",
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 17.5),
         ),
         content: Text(
           'Campo(s) vazio(s)\nformato de IP '
           'inválido\nformato de Porta inválida',
-          style: TextStyle(fontSize: 17),
+          style: TextStyle(fontSize: 15),
         ),
         actions: [
           FlatButton(

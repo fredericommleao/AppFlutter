@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, file_names, unused_label, non_constant_identifier_names, unnecessary_brace_in_string_interps, prefer_typing_uninitialized_variables, unused_local_variable, avoid_unnecessary_containers, deprecated_member_use
 import 'dart:convert';
-import 'package:aplicativo/Controller/sharedValues.dart';
+import 'package:aplicativo/Modelo/Parametros.dart';
+import 'package:aplicativo/Persistencia/sharedValues.dart';
 import 'package:aplicativo/tela_autenticacao.dart';
 import 'package:aplicativo/tela_novo_servidor.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Model/Parametros.dart';
 
 class Servidores extends StatefulWidget {
   @override
@@ -18,7 +18,8 @@ late SharedPreferences
     prefs;
 
 class _ServidoresState extends State<Servidores> {
-  /*Atributo do tipo lista, que será chamado nas principais funções da classe, pois é ela que armazena
+  /*
+  Atributo do tipo lista, que será chamado nas principais funções da classe, pois é ela que armazena
   */
   List todos = [];
   /*
@@ -98,12 +99,12 @@ class _ServidoresState extends State<Servidores> {
     return showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              title: Text("Atenção",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
               content: Text("Deseja realmente apagar ?",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
+                  style:
+                      TextStyle(fontSize: 17.5, fontWeight: FontWeight.w400)),
               actions: [
                 FlatButton(
+                    color: Color.fromARGB(255, 223, 135, 4),
                     onPressed: () {
                       setState(() {
                         todos.remove(todo);
@@ -113,14 +114,19 @@ class _ServidoresState extends State<Servidores> {
                     },
                     child: Text("SIM",
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w400))),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white))),
                 FlatButton(
+                    color: Color.fromARGB(255, 223, 135, 4),
                     onPressed: () {
                       Navigator.pop(ctx);
                     },
                     child: Text("NÃO",
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w400))),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white))),
               ],
             ));
   }
@@ -185,12 +191,17 @@ class _ServidoresState extends State<Servidores> {
     );
   }
 
+  /*
+  Essa função é reponsável por exibir na tela
+  as opções de 'alterar' ou 'selecionar'
+  */
   escolha_opcao(int indice) {
     return showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
               title: Text("Escolha uma opção",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
+                  style:
+                      TextStyle(fontSize: 17.5, fontWeight: FontWeight.w400)),
               actions: [
                 FlatButton(
                   color: Color.fromARGB(255, 223, 135, 4),
@@ -208,13 +219,7 @@ class _ServidoresState extends State<Servidores> {
                 FlatButton(
                     color: Color.fromARGB(255, 223, 135, 4),
                     onPressed: () async {
-                      SharedValues value = SharedValues(indice);
-                      var x = await value.exibirIp();
-                      var y = await value.exibirPorta();
-
-                      value.marcarPadrao(indice);
-                      value.padraoLogin(x, y);
-                      _navegaTelaLogin(context);
+                      selecionar(indice);
                     },
                     child: Text(
                       'SELECIONAR',
@@ -227,11 +232,25 @@ class _ServidoresState extends State<Servidores> {
             ));
   }
 
+  /*
+  Essa função é responsável por salvar os parametros do Card que foi clicado
+  para serem utilizados na tela de autenticação(tela login), 
+  o indice do Card selecionado é salvado no objeto value da classe shared preferences.
+  */
+  selecionar(int indice) async {
+    SharedValues value = SharedValues(indice);
+    var ip = await value.exibirIp();
+    var porta = await value.exibirPorta();
+    value.marcarPadrao(indice);
+    value.padraoLogin(ip, porta);
+    _navegaTelaLogin(context);
+  }
+
   /*Essa função é responsavel por chamar uma nova rota de widget(encaminhamento para uma nova página),
   a rota chamada será a classe apontada dentro da Arrow Function */
   _navegaTelaLogin(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => tela_login()));
+        context, MaterialPageRoute(builder: (context) => Autenticacao()));
   }
 
   /*
@@ -244,18 +263,18 @@ class _ServidoresState extends State<Servidores> {
     return ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.5),
         leading: Container(
-          width: 50,
-          height: 50,
+          width: 45,
+          height: 45,
           padding: EdgeInsets.only(right: 15.0),
           decoration: BoxDecoration(
               border:
-                  Border(right: BorderSide(width: 1.0, color: Colors.black))),
+                  Border(right: BorderSide(width: 0.5, color: Colors.black))),
           child: CircleAvatar(
             backgroundColor: Color.fromARGB(255, 223, 135, 4),
             child: Text("${index}",
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 17.5,
                     fontWeight: FontWeight.w400)),
           ),
         ),
@@ -266,7 +285,7 @@ class _ServidoresState extends State<Servidores> {
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.normal,
-                fontSize: 20,
+                fontSize: 15.3,
               ),
             ),
             SizedBox(
@@ -290,6 +309,6 @@ class _ServidoresState extends State<Servidores> {
               delete_parametro(todo);
             },
             child: Icon(Icons.delete,
-                color: Color.fromARGB(255, 223, 135, 4), size: 35.0)));
+                color: Color.fromARGB(255, 223, 135, 4), size: 32.5)));
   }
 }
